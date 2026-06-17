@@ -1,8 +1,10 @@
 # table
- BANCO DE DADOS  HT-SIS-01-M-26-10495
-CREATE DATABASE SIS04T25;
-USE SIS04T25;
 
+-- Criar e selecionar o banco de dados
+CREATE DATABASE IF NOT EXISTS LojaCDDVD;
+USE LojaCDDVD;
+
+-- Tabela Customers
 CREATE TABLE Customers (
     CustomerID INT AUTO_INCREMENT PRIMARY KEY,
     CustomerName VARCHAR(100) NOT NULL,
@@ -13,12 +15,14 @@ CREATE TABLE Customers (
     Country VARCHAR(100)
 );
 
+-- Tabela Categories
 CREATE TABLE Categories (
     CategoryID INT AUTO_INCREMENT PRIMARY KEY,
     CategoryName VARCHAR(100) NOT NULL,
     Description VARCHAR(255)
 );
 
+-- Tabela Employees
 CREATE TABLE Employees (
     EmployeeID INT AUTO_INCREMENT PRIMARY KEY,
     LastName VARCHAR(100),
@@ -28,6 +32,7 @@ CREATE TABLE Employees (
     Notes TEXT
 );
 
+-- Tabela Suppliers
 CREATE TABLE Suppliers (
     SupplierID INT AUTO_INCREMENT PRIMARY KEY,
     SupplierName VARCHAR(100),
@@ -39,6 +44,7 @@ CREATE TABLE Suppliers (
     Phone VARCHAR(20)
 );
 
+-- Tabela Products
 CREATE TABLE Products (
     ProductID INT AUTO_INCREMENT PRIMARY KEY,
     ProductName VARCHAR(100),
@@ -48,12 +54,14 @@ CREATE TABLE Products (
     Price DECIMAL(10,2)
 );
 
+-- Tabela Shippers
 CREATE TABLE Shippers (
     ShipperID INT AUTO_INCREMENT PRIMARY KEY,
     ShipperName VARCHAR(100),
     Phone VARCHAR(20)
 );
 
+-- Tabela Orders
 CREATE TABLE Orders (
     OrderID INT AUTO_INCREMENT PRIMARY KEY,
     CustomerID INT,
@@ -62,6 +70,7 @@ CREATE TABLE Orders (
     ShipperID INT
 );
 
+-- Tabela OrderDetails
 CREATE TABLE OrderDetails (
     OrderDetailID INT AUTO_INCREMENT PRIMARY KEY,
     OrderID INT,
@@ -69,6 +78,7 @@ CREATE TABLE OrderDetails (
     Quantity INT
 );
 
+-- Chaves estrangeiras Products
 ALTER TABLE Products
 ADD CONSTRAINT fk_products_suppliers
 FOREIGN KEY (SupplierID)
@@ -79,6 +89,7 @@ ADD CONSTRAINT fk_products_categories
 FOREIGN KEY (CategoryID)
 REFERENCES Categories(CategoryID);
 
+-- Chaves estrangeiras Orders
 ALTER TABLE Orders
 ADD CONSTRAINT fk_orders_customers
 FOREIGN KEY (CustomerID)
@@ -94,6 +105,7 @@ ADD CONSTRAINT fk_orders_shippers
 FOREIGN KEY (ShipperID)
 REFERENCES Shippers(ShipperID);
 
+-- Chaves estrangeiras OrderDetails
 ALTER TABLE OrderDetails
 ADD CONSTRAINT fk_orderdetails_orders
 FOREIGN KEY (OrderID)
@@ -104,12 +116,14 @@ ADD CONSTRAINT fk_orderdetails_products
 FOREIGN KEY (ProductID)
 REFERENCES Products(ProductID);
 
+-- Inserir clientes
 INSERT INTO Customers
 (CustomerName, ContactName, Address, City, PostalCode, Country)
 VALUES
 ('João da Silva', 'Carlos Silva', 'Rua das Flores, 125', 'São Paulo', '01000-000', 'Brasil'),
 ('Maria Santos', 'Ana Lima', 'Av. Brasil, 450', 'Rio de Janeiro', '20000-000', 'Brasil');
 
+-- Inserir categorias
 INSERT INTO Categories
 (CategoryName, Description)
 VALUES
@@ -117,18 +131,21 @@ VALUES
 ('DVDs', 'Filmes e vídeos'),
 ('Blu-Ray', 'Filmes em alta definição');
 
+-- Inserir funcionários
 INSERT INTO Employees
 (LastName, FirstName, BirthDate, Photo, Notes)
 VALUES
 ('Souza', 'Pedro', '1985-03-10', NULL, 'Atendente'),
 ('Oliveira', 'Mariana', '1990-07-21', NULL, 'Vendas');
 
+-- Inserir fornecedores
 INSERT INTO Suppliers
 (SupplierName, ContactName, Address, City, PostalCode, Country, Phone)
 VALUES
 ('Music World', 'Lucas Pereira', 'Rua do Comércio, 100', 'São Paulo', '01000-000', 'Brasil', '(11)3333-4444'),
 ('Global Discos', 'Fernando Costa', 'Av. das Nações, 200', 'Rio de Janeiro', '20000-000', 'Brasil', '(21)2222-3333');
 
+-- Inserir produtos
 INSERT INTO Products
 (ProductName, SupplierID, CategoryID, Unit, Price)
 VALUES
@@ -136,18 +153,21 @@ VALUES
 ('DVD Show Ao Vivo', 2, 2, 'Unidade', 39.90),
 ('Blu-Ray Ação Total', 2, 3, 'Unidade', 49.90);
 
+-- Inserir transportadoras
 INSERT INTO Shippers
 (ShipperName, Phone)
 VALUES
 ('Entrega Rápida', '(31)9999-1111'),
 ('Transportadora Brasil', '(31)8888-2222');
 
+-- Inserir pedidos
 INSERT INTO Orders
 (CustomerID, EmployeeID, OrderDate, ShipperID)
 VALUES
 (1, 1, '2025-05-01', 1),
 (2, 2, '2025-05-02', 2);
 
+-- Inserir detalhes dos pedidos
 INSERT INTO OrderDetails
 (OrderID, ProductID, Quantity)
 VALUES
